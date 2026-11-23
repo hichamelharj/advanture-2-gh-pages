@@ -18,8 +18,8 @@ This project is a single-brand online store designed for deployment to GitHub Pa
 - **State/Storage**: LocalStorage (for demo persistence)
 
 ## Progress Tracking
-- [ ] Project Initialization
-- [ ] Core Storefront (Home, Category, Product Pages)
-- [ ] Shopping Cart & Checkout Flow
-- [ ] Admin Dashboard
-- [ ] Brand Identity & Polishing
+- [x] Project Initialization
+- [x] Core Storefront (Home, Category, Product Pages)
+- [x] Shopping Cart & Checkout Flow
+- [x] Admin Dashboard
+- [x] Brand Identity & Polishing
