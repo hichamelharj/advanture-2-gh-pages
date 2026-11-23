@@ -1,48 +1,58 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-
-const currentYear = new Date().getFullYear();
+import { useStore } from '../lib/store';
+import { whatsappLink } from '../lib/whatsapp';
 
 const Footer = () => {
+  const { settings } = useStore();
+  const [year] = React.useState(() => new Date().getFullYear());
 
   return (
     <footer className="bg-luxe-charcoal text-luxe-ivory">
       <div className="page-shell py-16 sm:py-20">
-        <div className="grid gap-12 border-b border-luxe-ivory/15 pb-14 md:grid-cols-[1.4fr_1fr_1fr] md:gap-16">
+        <div className="grid gap-12 border-b border-luxe-ivory/15 pb-14 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:gap-12">
           <div className="max-w-sm">
             <Link to="/" className="wordmark wordmark-light">
-              LUXEBRAND
-              <span>OBJECTS FOR THE EVERYDAY</span>
+              {settings.storeName}
+              <span>ATELIER STREETWEAR MAROC</span>
             </Link>
             <p className="mt-6 text-sm leading-7 text-luxe-ivory/60">
-              A considered collection for the everyday, and everything worth keeping.
+              Des basiques heavyweight pensés à Casablanca, faits pour durer — et pour être portés tous les jours.
             </p>
           </div>
 
           <div>
-            <h2 className="eyebrow text-luxe-beige">Explore</h2>
-            <ul className="mt-5 space-y-3 text-sm text-luxe-ivory/65">
-              <li><Link to="/" className="footer-link">Shop</Link></li>
+            <h2 className="eyebrow text-luxe-beige">Boutique</h2>
+            <ul className="mt-5 space-y-3 text-sm text-luxe-ivory/70">
+              <li><Link to="/#shop" className="footer-link">Toute la collection</Link></li>
               <li><Link to="/journal" className="footer-link">Journal</Link></li>
-              <li><Link to="/cart" className="footer-link">Shopping bag</Link></li>
+              <li><Link to="/panier" className="footer-link">Panier</Link></li>
             </ul>
           </div>
 
           <div>
-            <h2 className="eyebrow text-luxe-beige">The details</h2>
-            <ul className="mt-5 space-y-3 text-sm text-luxe-ivory/65">
-              <li><Link to="/account" className="footer-link">Guest orders</Link></li>
-              <li><Link to="/account" className="footer-link">Demo store information</Link></li>
-              <li className="max-w-xs pt-1 text-xs leading-5 text-luxe-ivory/40">
-                Orders are simulated and stored in this browser. No payment is taken.
-              </li>
+            <h2 className="eyebrow text-luxe-beige">Aide</h2>
+            <ul className="mt-5 space-y-3 text-sm text-luxe-ivory/70">
+              <li><Link to="/infos#livraison" className="footer-link">Livraison</Link></li>
+              <li><Link to="/infos#retours" className="footer-link">Échanges & retours</Link></li>
+              <li><Link to="/infos#tailles" className="footer-link">Guide des tailles</Link></li>
+              <li><Link to="/commandes" className="footer-link">Mes commandes</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="eyebrow text-luxe-beige">Contact</h2>
+            <ul className="mt-5 space-y-3 text-sm text-luxe-ivory/70">
+              <li><a href={whatsappLink(settings.whatsappNumber)} target="_blank" rel="noreferrer" className="footer-link">WhatsApp</a></li>
+              <li><a href={`https://instagram.com/${settings.instagram}`} target="_blank" rel="noreferrer" className="footer-link">Instagram @{settings.instagram}</a></li>
+              <li><a href={`mailto:${settings.email}`} className="footer-link">{settings.email}</a></li>
             </ul>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 pt-6 text-[9px] uppercase tracking-[0.15em] text-luxe-ivory/40 sm:flex-row sm:items-center sm:justify-between">
-          <span>© {currentYear} LUXEBRAND</span>
-          <span>Designed for a life well considered</span>
-          <Link to="/account" className="footer-link w-fit">Demo details</Link>
+        <div className="flex flex-col gap-3 pt-6 text-[10px] uppercase tracking-[0.15em] text-luxe-ivory/45 sm:flex-row sm:items-center sm:justify-between">
+          <span>© {year} {settings.storeName} — Tous droits réservés</span>
+          <span>Paiement à la livraison · Maroc</span>
         </div>
       </div>
     </footer>

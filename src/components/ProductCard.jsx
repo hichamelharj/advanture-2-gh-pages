@@ -1,109 +1,61 @@
-import React from 'react';
-import StoreContext from './StoreContext';
+import { Link } from 'react-router-dom';
+import { formatPrice, productImage } from '../lib/format';
+import { useStore } from '../lib/store';
+import { CATEGORIES } from '../data/products';
 import ProductImage from './ProductImage';
 
-const ProductCard = ({ product }) => {
-  const { name, price, category, stock, image } = product;
-  const { cart, addToCart } = React.useContext(StoreContext);
-  const imageFit = product.imageFit || 'cover';
-  const quickViewRef = React.useRef(null);
-  const isInStock = stock > 0;
-  const cartItem = cart.find(item => item.id === product.id);
-  const atStockLimit = cartItem?.qty >= stock;
-  const addToCartLabel = !isInStock
-    ? 'Unavailable'
-    : atStockLimit
-      ? 'Stock limit reached'
-      : cartItem
-        ? `Add another · ${cartItem.qty} in bag`
-        : 'Add to bag';
+const categoryLabel = id => CATEGORIES.find(category => category.id === id)?.label ?? id;
 
-  const openQuickView = () => quickViewRef.current?.showModal();
-  const closeQuickView = () => quickViewRef.current?.close();
+export const StockBadge = ({ stock, className = '' }) => {
+  if (stock <= 0) return <span className={`stock-badge stock-badge-out ${className}`}>Épuisé</span>;
+  if (stock <= 5) return <span className={`stock-badge stock-badge-low ${className}`}>Plus que {stock}</span>;
+  return null;
+};
+
+const ProductCard = ({ product }) => {
+  const { name, price, compareAt, category, stock, image } = product;
+  const { addToCart, qtyInCart } = useStore();
+  const oneSize = product.sizes?.length === 1;
+  const canQuickAdd = oneSize && stock - qtyInCart(product.id) > 0;
 
   return (
     <article className="product-card group min-w-0">
-      <div className="product-card-image relative aspect-[4/5] overflow-hidden bg-luxe-beige/35">
-        <ProductImage src={image} alt={name} category={category} fit={imageFit} />
-        <span className="absolute left-3 top-3 z-[1] bg-luxe-ivory/90 px-2.5 py-1.5 text-[8px] uppercase tracking-[0.15em] text-luxe-charcoal sm:left-4 sm:top-4">
-          {isInStock ? 'In stock' : 'Sold out'}
-        </span>
-        <div className="product-card-action">
-          <button
-            type="button"
-            onClick={openQuickView}
-            className="product-action-button bg-luxe-ivory text-luxe-charcoal hover:bg-luxe-beige"
-          >
-            Quick view
-          </button>
-          <button
-            type="button"
-            disabled={!isInStock || atStockLimit}
-            onClick={() => addToCart(product)}
-            aria-label={`${addToCartLabel}: ${name}`}
-            className="product-action-button bg-luxe-green text-luxe-ivory hover:bg-luxe-charcoal disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {addToCartLabel}
-          </button>
-        </div>
-      </div>
-      <div className="product-card-details">
-        <p className="product-card-category text-[8px] uppercase tracking-[0.18em] text-luxe-copper sm:text-[9px]">
-          {category}
-        </p>
-        <div className="product-card-meta mt-2">
-          <h3 className="product-card-name font-serif text-base leading-snug sm:text-lg">{name}</h3>
-          <span className="product-card-price pt-0.5 text-xs tracking-wide sm:text-sm">${price}</span>
-        </div>
-      </div>
-
-      <dialog
-        ref={quickViewRef}
-        className="quick-view-dialog"
-        aria-labelledby={`quick-view-title-${product.id}`}
-        onClick={event => {
-          if (event.target === event.currentTarget) closeQuickView();
-        }}
-      >
-        <div className="quick-view-panel">
-          <div className="quick-view-image">
-            <ProductImage src={image} alt={name} category={category} fit={imageFit} />
-          </div>
-          <div className="quick-view-copy">
-            <button
-              type="button"
-              onClick={closeQuickView}
-              className="quick-view-close"
-              aria-label={`Close ${name} quick view`}
-            >
-              ×
-            </button>
-            <p className="eyebrow text-luxe-copper">{category}</p>
-            <h2 id={`quick-view-title-${product.id}`} className="mt-4 font-serif text-3xl tracking-[-0.04em] sm:text-4xl">
-              {name}
-            </h2>
-            <p className="mt-4 text-sm tracking-wide">${price}</p>
-            <p className="mt-6 flex items-center gap-2 text-xs uppercase tracking-[0.14em] text-luxe-charcoal/70">
-              <span aria-hidden="true" className={`h-1.5 w-1.5 ${isInStock ? 'bg-luxe-green' : 'bg-luxe-copper'}`} />
-              {isInStock ? 'In stock' : 'Sold out'}
-            </p>
-            {product.description && (
-              <p className="mt-5 max-w-md text-sm leading-7 text-luxe-charcoal/70">{product.description}</p>
+      <Link to={`/produit/${product.id}`} className="block" aria-label={`${name}, ${formatPrice(price)}`}>
+        <div className="product-card-image relative aspect-[4/5] overflow-hidden bg-luxe-beige/35">
+          <ProductImage src={productImage(image)} alt={name} category={categoryLabel(category)} fit={product.imageFit} />
+          <div className="absolute left-3 top-3 z-[1] flex flex-col items-start gap-1.5 sm:left-4 sm:top-4">
+            <StockBadge stock={stock} />
+            {compareAt > price && stock > 0 && (
+              <span className="stock-badge stock-badge-sale">−{Math.round((1 - price / compareAt) * 100)}%</span>
             )}
-            <button
-              type="button"
-              disabled={!isInStock || atStockLimit}
-              onClick={() => {
-                addToCart(product);
-                closeQuickView();
-              }}
-              className="button-dark mt-8 w-full justify-center disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
-            >
-              {addToCartLabel}
-            </button>
           </div>
         </div>
-      </dialog>
+      </Link>
+      <div className="product-card-details">
+        <p className="text-[10px] uppercase tracking-[0.16em] text-luxe-copper">{categoryLabel(category)}</p>
+        <div className="product-card-meta mt-2">
+          <h3 className="product-card-name font-serif text-base leading-snug sm:text-lg">
+            <Link to={`/produit/${product.id}`} className="hover:text-luxe-copper">{name}</Link>
+          </h3>
+          <span className="product-card-price pt-0.5 text-right text-sm">
+            {formatPrice(price)}
+            {compareAt > price && <s className="block text-[11px] text-luxe-charcoal/45">{formatPrice(compareAt)}</s>}
+          </span>
+        </div>
+        {stock > 0 && product.sizes?.length > 1 && (
+          <p className="mt-2 text-[11px] tracking-wide text-luxe-charcoal/50">{product.sizes.join(' · ')}</p>
+        )}
+        {oneSize && (
+          <button
+            type="button"
+            disabled={!canQuickAdd}
+            onClick={() => addToCart(product, product.sizes[0])}
+            className="text-link mt-3 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {stock <= 0 ? 'Épuisé' : canQuickAdd ? 'Ajouter au panier' : 'Stock max. au panier'}
+          </button>
+        )}
+      </div>
     </article>
   );
 };

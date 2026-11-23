@@ -1,65 +1,60 @@
-const JournalPage = () => {
-  return (
-    <main>
-      <header className="journal-intro">
-        <div className="page-shell">
-          <span className="eyebrow text-luxe-copper">The journal</span>
-          <h1 className="editorial-heading mt-5 max-w-3xl">
-            Notes on the things we keep.
-          </h1>
-          <p className="mt-6 max-w-xl text-sm leading-7 text-luxe-charcoal/65 sm:text-base">
-            A slower look at material, movement and the everyday objects that
-            become part of our story.
-          </p>
-        </div>
-      </header>
+import { Link } from 'react-router-dom';
+import { productImage } from '../lib/format';
 
-      <section className="section-padding bg-luxe-ivory">
-        <div className="page-shell grid gap-6 md:grid-cols-3">
-          <article className="journal-card md:col-span-2">
-            <div className="journal-card-image journal-image-material" role="img" aria-label="Warm leather tones and natural materials" />
-            <div className="journal-card-copy">
-              <span className="eyebrow text-luxe-copper">Materials</span>
-              <h2 className="mt-3 font-serif text-3xl leading-tight sm:text-4xl">
-                The beauty of a well-loved leather.
-              </h2>
-              <p className="mt-4 max-w-xl text-sm leading-7 text-luxe-charcoal/65">
-                Natural texture is never static. With time and use, a leather
-                piece develops its own character—an honest record of where it
-                has been.
-              </p>
-            </div>
-          </article>
-          <article className="journal-card">
-            <div className="journal-card-image journal-image-travel" role="img" aria-label="A quiet moment before a journey" />
-            <div className="journal-card-copy">
-              <span className="eyebrow text-luxe-copper">Travel</span>
-              <h2 className="mt-3 font-serif text-2xl leading-tight">
-                Carry only what matters.
-              </h2>
-              <p className="mt-4 text-sm leading-7 text-luxe-charcoal/65">
-                A thoughtful packing ritual begins with choosing fewer, better
-                companions.
-              </p>
-            </div>
-          </article>
-          <article className="journal-card md:col-span-3 md:grid md:grid-cols-[0.8fr_1.2fr]">
-            <div className="journal-card-image journal-image-detail" role="img" aria-label="A quiet, timeless wardrobe" />
+const STORIES = [
+  {
+    tag: 'Matière',
+    title: 'Pourquoi 450 GSM change tout.',
+    text: 'Le GSM, c’est le poids du tissu au mètre carré. Un hoodie classique tourne autour de 280. À 450, le molleton tombe droit, ne bouloche pas et garde sa forme lavage après lavage.',
+    image: 'products/hoodie-grey.svg',
+    link: '/produit/2',
+    wide: true,
+  },
+  {
+    tag: 'Style',
+    title: 'Trois façons de porter le cargo.',
+    text: 'Avec le hoodie sable pour un ton sur ton, avec un tee ivoire pour l’été, ou tout en noir avec la casquette minimal.',
+    image: 'products/cargo-charcoal.svg',
+    link: '/produit/4',
+  },
+  {
+    tag: 'Inspiration',
+    title: 'L’étoile du zellige, en version brodée.',
+    text: 'Huit branches, deux carrés superposés : le motif qu’on retrouve sur les murs des riads devient un détail discret sur notre tee heavyweight.',
+    image: 'products/tee-green.svg',
+    link: '/produit/10',
+    full: true,
+  },
+];
+
+const JournalPage = () => (
+  <main>
+    <header className="journal-intro">
+      <div className="page-shell">
+        <span className="eyebrow text-luxe-copper">Le journal</span>
+        <h1 className="editorial-heading mt-5 max-w-3xl">Matières, coupes et inspirations.</h1>
+        <p className="mt-6 max-w-xl text-[15px] leading-7 text-luxe-charcoal/70">
+          Les coulisses du drop : comment on choisit nos tissus, comment porter nos pièces, et d’où viennent nos idées.
+        </p>
+      </div>
+    </header>
+
+    <section className="section-padding bg-luxe-ivory">
+      <div className="page-shell grid gap-6 md:grid-cols-3">
+        {STORIES.map(story => (
+          <article key={story.title} className={`journal-card${story.wide ? ' md:col-span-2 md:grid md:grid-cols-[0.9fr_1.1fr]' : ''}${story.full ? ' md:col-span-3 md:grid md:grid-cols-[0.7fr_1.3fr]' : ''}`}>
+            <img src={productImage(story.image)} alt="" loading="lazy" className="journal-card-image h-full w-full object-cover" />
             <div className="journal-card-copy flex flex-col justify-center">
-              <span className="eyebrow text-luxe-copper">Point of view</span>
-              <h2 className="mt-3 font-serif text-3xl leading-tight">
-                An edit, not an excess.
-              </h2>
-              <p className="mt-4 max-w-xl text-sm leading-7 text-luxe-charcoal/65">
-                Personal style is often less about adding something new, and
-                more about finding the pieces that feel like you.
-              </p>
+              <span className="eyebrow text-luxe-copper">{story.tag}</span>
+              <h2 className="mt-3 font-serif text-2xl leading-tight sm:text-3xl">{story.title}</h2>
+              <p className="mt-4 max-w-xl text-sm leading-7 text-luxe-charcoal/70">{story.text}</p>
+              <Link to={story.link} className="text-link mt-6 w-fit">Voir la pièce <span aria-hidden="true">↗</span></Link>
             </div>
           </article>
-        </div>
-      </section>
-    </main>
-  );
-};
+        ))}
+      </div>
+    </section>
+  </main>
+);
 
 export default JournalPage;

@@ -1,32 +1,27 @@
 import React from 'react';
+import { normalizeMoroccanPhone } from '../lib/format';
+import { SUBSCRIBERS_KEY, readSubscribers } from '../lib/subscribers';
 
 const Newsletter = () => {
-  const [email, setEmail] = React.useState('');
+  const [phone, setPhone] = React.useState('');
   const [status, setStatus] = React.useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const address = email.trim().toLowerCase();
-    if (!address) return;
-
+  const handleSubmit = event => {
+    event.preventDefault();
+    const normalized = normalizeMoroccanPhone(phone);
+    if (!normalized) {
+      setStatus('invalid');
+      return;
+    }
     try {
-      const savedEmails = JSON.parse(
-        window.localStorage.getItem('store_newsletter_subscribers') || '[]'
-      );
-      if (!Array.isArray(savedEmails)) {
-        throw new Error('Stored newsletter signups are not a list.');
-      }
-
-      if (!savedEmails.includes(address)) {
-        window.localStorage.setItem(
-          'store_newsletter_subscribers',
-          JSON.stringify([...savedEmails, address])
-        );
+      const saved = readSubscribers();
+      if (!saved.some(entry => entry.phone === normalized)) {
+        window.localStorage.setItem(SUBSCRIBERS_KEY, JSON.stringify([...saved, { phone: normalized, at: new Date().toISOString() }]));
       }
       setStatus('saved');
-      setEmail('');
+      setPhone('');
     } catch (error) {
-      console.error('Unable to save newsletter signup in this browser.', error);
+      console.error('Unable to save signup.', error);
       setStatus('error');
     }
   };
@@ -36,46 +31,36 @@ const Newsletter = () => {
       <div className="page-shell">
         <div className="newsletter-panel">
           <div className="max-w-xl">
-          <span className="eyebrow text-luxe-copper">
-            A note from LUXEBRAND
-          </span>
-          <h2 className="mt-4 font-serif text-3xl leading-tight tracking-[-0.035em] sm:text-4xl">
-            A little more considered.
-          </h2>
-          <p className="mt-4 text-sm leading-7 text-luxe-charcoal/65">
-            Save your address locally as part of this browser-only demo.
-          </p>
+            <span className="eyebrow text-luxe-copper">Liste VIP · Drop 02</span>
+            <h2 className="mt-4 font-serif text-3xl leading-tight tracking-[-0.035em] sm:text-4xl">
+              Soyez prévenu avant tout le monde.
+            </h2>
+            <p className="mt-4 text-sm leading-7 text-luxe-charcoal/65">
+              Les drops partent vite. Laissez votre numéro WhatsApp : on vous envoie un message
+              24h avant la sortie, pour commander avant l’ouverture au public.
+            </p>
           </div>
           <div className="w-full max-w-lg">
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row">
-              <label className="sr-only" htmlFor="newsletter-email">Email address</label>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row" noValidate>
+              <label className="sr-only" htmlFor="drop-phone">Numéro WhatsApp</label>
               <input
-                id="newsletter-email"
-                type="email"
+                id="drop-phone"
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
                 required
-                value={email}
-                onChange={event => setEmail(event.target.value)}
-                placeholder="Your email address"
+                value={phone}
+                onChange={event => { setPhone(event.target.value); setStatus(null); }}
+                placeholder="06 12 34 56 78"
                 className="newsletter-input"
+                aria-invalid={status === 'invalid'}
               />
-              <button type="submit" className="button-dark shrink-0">
-                Save locally
-                <span aria-hidden="true">↗</span>
-              </button>
+              <button type="submit" className="button-dark shrink-0">Je m’inscris <span aria-hidden="true">↗</span></button>
             </form>
-            <p className="mt-3 text-[10px] leading-5 text-luxe-charcoal/50">
-              Demo only: your address is saved in this browser. No email is sent.
-            </p>
-            {status === 'saved' && (
-              <p role="status" className="mt-3 text-xs text-luxe-green">
-                Saved in this browser. Thank you.
-              </p>
-            )}
-            {status === 'error' && (
-              <p role="alert" className="mt-3 text-xs text-luxe-copper">
-                We could not save your address. Please check your browser storage settings.
-              </p>
-            )}
+            {status === 'invalid' && <p role="alert" className="mt-3 text-xs text-luxe-copper">Entrez un numéro marocain valide (06… ou 07…).</p>}
+            {status === 'saved' && <p role="status" className="mt-3 text-xs text-luxe-green">C’est noté ! Vous serez prévenu sur WhatsApp avant le prochain drop.</p>}
+            {status === 'error' && <p role="alert" className="mt-3 text-xs text-luxe-copper">Impossible d’enregistrer pour le moment. Réessayez.</p>}
+            <p className="mt-3 text-[11px] leading-5 text-luxe-charcoal/50">Pas de spam : un message par drop, maximum.</p>
           </div>
         </div>
       </div>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Parachute noir">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+<stop offset="0" stop-color="#F8F4EB"/>
+<stop offset="1" stop-color="#E6DBC6"/>
+</linearGradient>
+<radialGradient id="shadow" cx="50%" cy="50%" r="50%">
+<stop offset="0%" stop-color="#15160f" stop-opacity="0.24"/>
+<stop offset="100%" stop-color="#15160f" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="garment" x1="0.15" y1="0" x2="0.85" y2="1">
+<stop offset="0%" stop-color="#343533"/>
+<stop offset="55%" stop-color="#1c1d1c"/>
+<stop offset="100%" stop-color="#0c0d0c"/>
+</linearGradient>
+</defs>
+<rect width="800" height="1000" fill="url(#bg)"/>
+<ellipse cx="400" cy="900" rx="270" ry="70" fill="url(#shadow)"/>
+
+<path d="M282,222 L518,222 Q590,520 600,860 L430,868 L400,400 L370,868 L200,860 Q210,520 282,222 Z" fill="url(#garment)"/>
+<rect x="278" y="182" width="244" height="44" rx="4" fill="#0a0b0a"/>
+<path d="M244,420 Q260,600 236,780 M556,420 Q540,600 564,780" fill="none" stroke="#0a0b0a" stroke-width="4" stroke-dasharray="10 9"/>
+<path d="M202,842 Q285,820 368,848 M432,848 Q515,820 598,842" fill="none" stroke="#6f706f" stroke-width="5"/>
+</svg>

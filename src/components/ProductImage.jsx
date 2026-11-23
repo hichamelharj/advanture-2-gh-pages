@@ -9,16 +9,12 @@ const ProductImage = ({ src, alt, category, fit = 'cover' }) => {
     return (
       <div
         role="img"
-        aria-label={`${alt}; image unavailable`}
+        aria-label={`${alt}; image indisponible`}
         className="flex h-full w-full flex-col items-center justify-center bg-luxe-green px-4 text-center text-luxe-ivory"
       >
         <span className="font-serif text-3xl tracking-[0.18em]">L</span>
-        <span className="mt-3 text-[8px] uppercase tracking-[0.2em] text-luxe-beige">
-          {category}
-        </span>
-        <span className="mt-2 text-[8px] uppercase tracking-[0.14em] text-luxe-ivory/70">
-          Image unavailable
-        </span>
+        <span className="mt-3 text-[8px] uppercase tracking-[0.2em] text-luxe-beige">{category}</span>
+        <span className="mt-2 text-[8px] uppercase tracking-[0.14em] text-luxe-ivory/70">Image indisponible</span>
       </div>
     );
   }
@@ -27,7 +23,7 @@ const ProductImage = ({ src, alt, category, fit = 'cover' }) => {
     <div className="relative h-full w-full">
       {status === 'loading' && (
         <div role="status" className="absolute inset-0 grid place-items-center bg-luxe-beige/45">
-          <span className="sr-only">Loading image for {alt}</span>
+          <span className="sr-only">Chargement de l’image pour {alt}</span>
           <span aria-hidden="true" className="h-5 w-5 animate-pulse border border-luxe-green/60" />
         </div>
       )}

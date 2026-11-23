@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="T-shirt vert atlas">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+<stop offset="0" stop-color="#F8F4EB"/>
+<stop offset="1" stop-color="#E6DBC6"/>
+</linearGradient>
+<radialGradient id="shadow" cx="50%" cy="50%" r="50%">
+<stop offset="0%" stop-color="#15160f" stop-opacity="0.22"/>
+<stop offset="100%" stop-color="#15160f" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="garment" x1="0.1" y1="0" x2="0.9" y2="1">
+<stop offset="0%" stop-color="#1f5c4c"/>
+<stop offset="55%" stop-color="#123d32"/>
+<stop offset="100%" stop-color="#0a251e"/>
+</linearGradient>
+</defs>
+<rect width="800" height="1000" fill="url(#bg)"/>
+<ellipse cx="400" cy="900" rx="270" ry="70" fill="url(#shadow)"/>
+
+<path d="M262,250 Q400,292 538,250 L684,332 L634,456 L582,426 L582,806 L218,806 L218,426 L166,456 L116,332 Z" fill="url(#garment)"/>
+<path d="M318,256 Q400,330 482,256" fill="none" stroke="#0a251e" stroke-width="14"/>
+<path d="M140,352 L184,432 M660,352 L616,432" stroke="#0a251e" stroke-width="4"/>
+<path d="M300,420 L300,790 M500,420 L500,790" stroke="#2c6f5c" stroke-width="2" opacity="0.5"/>
+</svg>

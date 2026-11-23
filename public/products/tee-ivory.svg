@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="T-shirt ivoire">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+<stop offset="0" stop-color="#F8F4EB"/>
+<stop offset="1" stop-color="#E6DBC6"/>
+</linearGradient>
+<radialGradient id="shadow" cx="50%" cy="50%" r="50%">
+<stop offset="0%" stop-color="#15160f" stop-opacity="0.2"/>
+<stop offset="100%" stop-color="#15160f" stop-opacity="0"/>
+</radialGradient>
+<linearGradient id="garment" x1="0.1" y1="0" x2="0.9" y2="1">
+<stop offset="0%" stop-color="#faf6ee"/>
+<stop offset="55%" stop-color="#f4efe4"/>
+<stop offset="100%" stop-color="#ddd3bf"/>
+</linearGradient>
+</defs>
+<rect width="800" height="1000" fill="url(#bg)"/>
+<ellipse cx="400" cy="900" rx="270" ry="70" fill="url(#shadow)"/>
+
+<path d="M262,250 Q400,292 538,250 L684,332 L634,456 L582,426 L582,806 L218,806 L218,426 L166,456 L116,332 Z" fill="url(#garment)"/>
+<path d="M318,256 Q400,330 482,256" fill="none" stroke="#c3bfb6" stroke-width="14"/>
+<path d="M140,352 L184,432 M660,352 L616,432" stroke="#c3bfb6" stroke-width="4"/>
+<path d="M300,420 L300,790 M500,420 L500,790" stroke="#e9e1d1" stroke-width="2" opacity="0.6"/>
+</svg>
